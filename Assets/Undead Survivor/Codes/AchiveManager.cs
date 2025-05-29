@@ -3,16 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Gestiona los logros del juego, como desbloquear personajes y mostrar notificaciones.
+/// Se basa en condiciones del GameManager y usa PlayerPrefs para guardar progreso.
+/// </summary>
 public class AchiveManager : MonoBehaviour
 {
-    public GameObject[] lockCharacter;      
+/// <summary>Referencias a los personajes bloqueados en la UI.</summary>
+    public GameObject[] lockCharacter;    
+
+/// <summary>Referencias a los personajes desbloqueados en la UI.</summary>
     public GameObject[] unlockCharacter;    
+
+/// <summary>Interfaz que muestra la notificación cuando se desbloquea un logro.</summary>
     public GameObject uiNotice;
 
+ // Enum privado que representa los logros del juego.
     enum Achive { UnlockPotato, UnlockBean }
     Achive[] achives;
     WaitForSecondsRealtime wait; 
 
+    /// <summary>
+    /// Inicializa logros al iniciar el juego. Crea claves en PlayerPrefs si no existen.
+    /// </summary>
     void Awake()
     {
         achives = (Achive[])Enum.GetValues(typeof(Achive));
@@ -23,6 +36,9 @@ public class AchiveManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Inicializa PlayerPrefs con los valores base de los logros.
+    /// </summary>
     void Init()
     {
 
@@ -34,11 +50,17 @@ public class AchiveManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Al comenzar la escena, desbloquea personajes según los logros alcanzados.
+    /// </summary>
     void Start()
     {
         UnlockCharacter();
     }
 
+    /// <summary>
+    /// Activa/desactiva personajes según los logros almacenados.
+    /// </summary>
     void UnlockCharacter()
     {
         for(int i = 0; i < lockCharacter.Length; i++)
@@ -51,6 +73,9 @@ public class AchiveManager : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Evalúa en cada frame si se cumplen las condiciones de algún logro.
+    /// </summary>
     void LateUpdate()
     {
         foreach (Achive achive in achives)
@@ -59,6 +84,11 @@ public class AchiveManager : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Verifica si se ha cumplido un logro, lo guarda y muestra aviso visual.
+    /// </summary>
+    /// <param name="achive">Logro a comprobar</param>
     void CheckAchive(Achive achive) 
     {
         bool isAchive = false;
@@ -88,6 +118,9 @@ public class AchiveManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Corrutina que muestra una notificación visual durante 5 segundos.
+    /// </summary>
     IEnumerator NoticeRoutine()
     {
         uiNotice.SetActive(true);

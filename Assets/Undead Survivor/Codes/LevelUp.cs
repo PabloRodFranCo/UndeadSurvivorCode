@@ -1,18 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+/// <summary>
+/// Gestiona la interfaz de subida de nivel y la selección de mejoras del jugador.
+/// </summary>
 public class LevelUp : MonoBehaviour
 {
     RectTransform rect;
     Item[] items;
 
+    /// <summary>
+    /// Inicializa el componente UI y los ítems disponibles.
+    /// </summary>
     void Awake()
     {
         rect = GetComponent<RectTransform>();
-        items = GetComponentsInChildren<Item>(true); 
+        items = GetComponentsInChildren<Item>(true);
     }
 
+    /// <summary>
+    /// Muestra el panel de subida de nivel y detiene el juego temporalmente.
+    /// </summary>
     public void Show()
     {
         Next();
@@ -22,6 +27,9 @@ public class LevelUp : MonoBehaviour
         AudioManager.instance.EffectBgm(true);
     }
 
+    /// <summary>
+    /// Oculta el panel de subida de nivel y reanuda el juego.
+    /// </summary>
     public void Hide()
     {
         rect.localScale = Vector3.zero;
@@ -30,17 +38,23 @@ public class LevelUp : MonoBehaviour
         AudioManager.instance.EffectBgm(false);
     }
 
+    /// <summary>
+    /// Aplica la mejora seleccionada por el jugador.
+    /// </summary>
+    /// <param name="index">Índice del ítem seleccionado.</param>
     public void Select(int index)
     {
         items[index].OnClick();
-   
     }
 
+    /// <summary>
+    /// Selecciona aleatoriamente tres ítems únicos y los muestra.
+    /// </summary>
     void Next()
     {
-        foreach(Item item in items)
+        foreach (Item item in items)
         {
-            item.gameObject.SetActive(false); 
+            item.gameObject.SetActive(false);
         }
 
         int[] ran = new int[3];
@@ -54,7 +68,7 @@ public class LevelUp : MonoBehaviour
                 break;
         }
 
-        for(int i=0;i<ran.Length;i++)
+        for (int i = 0; i < ran.Length; i++)
         {
             Item ranItem = items[ran[i]];
 
@@ -67,6 +81,5 @@ public class LevelUp : MonoBehaviour
                 ranItem.gameObject.SetActive(true);
             }
         }
-        
     }
 }
